@@ -1,4 +1,4 @@
-#Very flaky default api-Versioning. Take caution while changing it. Different from what stated is docs.
+#Very flaky default api-Versioning. Take extreme caution while changing it. Different from what stated in docs.
 
 # Creating service for consert
 apiVersion: v1
@@ -11,7 +11,7 @@ spec:
   ports:
     - protocol: "TCP"
       port: 80
-      targetPort: 80                #the port on the cluster needs to opened
+      targetPort: 80                #the port on the cluster that needs to be attached to service
   type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
 
 ---
@@ -30,9 +30,9 @@ spec:
     spec:
       containers:
       - name: consert
-        image: gcr.io/consert-146421/bitbucket-prateekrastogi-backend:9e94d5081d25a815ef17d842850c189ef65e62c2
+        image: gcr.io/consert-146421/bitbucket-prateekrastogi-backend:38b182047984cb92b874182be4ad510ffd156e4d
         ports:
-        - containerPort: 80    #opens port for the kubernetes cluster
+        - containerPort: 80    #opens port for the other pods of kubernetes cluster
 
 ---
 
@@ -106,4 +106,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 100Gi
+          storage: 10Gi
