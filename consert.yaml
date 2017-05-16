@@ -1,4 +1,6 @@
 #Very flaky default api-Versioning. Take extreme caution while changing it. Different from what stated in docs.
+#Deployment takes some time to properly deploy and connect components with each other. Have some patience in staging.
+
 
 # Creating service for consert
 apiVersion: v1
