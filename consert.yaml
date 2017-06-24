@@ -15,6 +15,7 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
+  loadBalancerIP: 104.197.178.214
   type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
 
 ---
