@@ -52,6 +52,7 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
+  loadBalancerIP: 104.196.213.171
   type: LoadBalancer                      #Exposes the service on each Node’s IP at a static port
 
 ---
@@ -88,7 +89,7 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
-  type: LoadBalancer                     #Exposes the service on each Node’s IP at a static port
+  type: NodePort                     #Exposes the service on each Node’s IP at a static port
 
 ---
 
