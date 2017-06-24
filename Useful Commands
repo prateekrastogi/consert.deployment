@@ -1,6 +1,6 @@
 ------Connect to Cluster------
 
-gcloud container clusters get-credentials staging --zone us-east1-b --project consert-146421
+gcloud container clusters get-credentials staging --zone us-east1-b --project consert-171717
 
 Use "kubectl <command> -h" for more information about a given command.
 
@@ -19,7 +19,7 @@ kubectl create -f consert.yaml --record      #File Deployment
 
 ------Updating a deployment----
 
-kubectl apply -f consert.yaml --record        #Update the whole deployment according to changes in consert.yaml
+kubectl apply -f consert.yaml --record        #Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
 
 
 ------Deleting a deployment------
@@ -27,7 +27,7 @@ kubectl apply -f consert.yaml --record        #Update the whole deployment accor
 kubectl delete -f consert.yaml
 
 
-------Convert config files between different API version------
+------Convert config files between different API version of Kubernetes------
 
 kubectl convert -f FILENAME [options]
 

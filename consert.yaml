@@ -1,4 +1,4 @@
-#Valid for kubectl 1.6.2 & kubernetes 1.6.2
+#Valid for kubectl 1.6.4 & kubernetes 1.6.4
 #Very flaky default api-Versioning provided. Take extreme caution while changing api-Version fields. It is different from what was stated in docs.
 #Deployment takes some time to properly deploy and connect all components with each other. Have some patience while staging.
 
@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/consert-146421/bitbucket-prateekrastogi-frontend:5d1150d5e54ad4983e14df56888ad8c9bd150546
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:e0ff2bb40c15933dd8b604cbfe62c95d5cd8da75
         ports:
         - containerPort: 3000    #opens port for the other pods of kubernetes cluster
 
@@ -69,7 +69,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-146421/bitbucket-prateekrastogi-backend:813dcbe437e2c54baf8e353bdd8b4ecb9117b7a8
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:df043e92d6a582e781ca2f72f56dbf6b708d0a90
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
 
@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-146421/bitbucket-prateekrastogi-seeder:fbebd0be5877b7808809834bc07ba8c8c35e828b
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:15aedc6db4c36c761113bc6d5716a3380f0a059a
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
