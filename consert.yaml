@@ -1,40 +1,113 @@
-#Very flaky default api-Versioning. Take extreme caution while changing it. Different from what stated in docs.
-#Deployment takes some time to properly deploy and connect components with each other. Have some patience in staging.
+#Valid for kubectl 1.6.2 & kubernetes 1.6.2
+#Very flaky default api-Versioning provided. Take extreme caution while changing api-Version fields. It is different from what was stated in docs.
+#Deployment takes some time to properly deploy and connect all components with each other. Have some patience while staging.
 
 
-# Creating service for consert
+# Creating service for frontend
 apiVersion: v1
 kind: Service
 metadata:
-  name: consert-service
+  name: frontend
 spec:
   selector:
-    app: consert                    #selection of service by label
+    app: frontend                    #selection of service by label
   ports:
     - protocol: "TCP"
       port: 80
-      targetPort: 80                #the port on the cluster that needs to be attached to service
+      targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
   type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
 
 ---
 
-#Deploying consert on kubernetes cluster
+#Deploying frontend on kubernetes cluster
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: consert-deployment
+  name: frontend-deployment
 spec:
-  replicas: 2 # tells deployment to run 2 pods matching the template
+  replicas: 1 # tells deployment to run 2 pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
-        app: consert          #labels for service selector to work properly
+        app: frontend          #labels for service selector to work properly
     spec:
       containers:
-      - name: consert
-        image: gcr.io/consert-146421/bitbucket-prateekrastogi-backend:38b182047984cb92b874182be4ad510ffd156e4d
+      - name: frontend
+        image: gcr.io/consert-146421/bitbucket-prateekrastogi-frontend:5d1150d5e54ad4983e14df56888ad8c9bd150546
         ports:
-        - containerPort: 80    #opens port for the other pods of kubernetes cluster
+        - containerPort: 3000    #opens port for the other pods of kubernetes cluster
+
+---
+
+# Creating service for backend
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend                    #selection of service by label
+  ports:
+    - protocol: "TCP"
+      port: 3100
+      targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
+  type: NodePort                      #Exposes the service on each Node’s IP at a static port
+
+---
+
+#Deploying backend on kubernetes cluster
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1 #tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: backend          #labels for service selector to work properly
+    spec:
+      containers:
+      - name: backend
+        image: gcr.io/consert-146421/bitbucket-prateekrastogi-backend:813dcbe437e2c54baf8e353bdd8b4ecb9117b7a8
+        ports:
+        - containerPort: 3100    #opens port for the other pods of kubernetes cluster
+
+---
+
+# Creating service for seeder
+apiVersion: v1
+kind: Service
+metadata:
+  name: seeder
+spec:
+  selector:
+    app: seeder                    #selection of service by label
+  ports:
+    - protocol: "TCP"
+      port: 3200
+      targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
+  type: NodePort                      #Exposes the service on each Node’s IP at a static port
+
+---
+
+#Deploying seeder on kubernetes cluster
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: seeder-deployment
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: seeder          #labels for service selector to work properly
+    spec:
+      containers:
+      - name: seeder
+        image: gcr.io/consert-146421/bitbucket-prateekrastogi-seeder:fbebd0be5877b7808809834bc07ba8c8c35e828b
+        ports:
+        - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
 ---
 
