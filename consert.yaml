@@ -50,7 +50,7 @@ spec:
     app: backend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 3100
+      port: 80
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
   type: LoadBalancer                      #Exposes the service on each Node’s IP at a static port
 
@@ -86,7 +86,7 @@ spec:
     app: seeder                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 3200
+      port: 80
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
   type: LoadBalancer                      #Exposes the service on each Node’s IP at a static port
 
