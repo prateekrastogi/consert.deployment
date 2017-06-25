@@ -2,6 +2,8 @@
 
 gcloud container clusters get-credentials staging --zone us-east1-b --project consert-171717
 
+gcloud container clusters get-credentials production --zone us-central1-a --project consert-171717
+
 Use "kubectl <command> -h" for more information about a given command.
 
 

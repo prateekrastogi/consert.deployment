@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:e0ff2bb40c15933dd8b604cbfe62c95d5cd8da75
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:af0726ca289446b067cd9bbcdd78e32e7afa5ff9
         ports:
         - containerPort: 3000    #opens port for the other pods of kubernetes cluster
 
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:df043e92d6a582e781ca2f72f56dbf6b708d0a90
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:d3dd304454f80090542da8a020b0ff68eafe9175
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
 
@@ -165,6 +165,7 @@ spec:
             - rs0
             - "--smallfiles"
             - "--noprealloc"
+            - "--enableMajorityReadConcern"
           ports:
             - containerPort: 27017
           volumeMounts:
