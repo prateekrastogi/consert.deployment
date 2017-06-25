@@ -53,7 +53,7 @@ spec:
       port: 80
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 104.198.186.205
-  type: LoadBalancer                      #Exposes the service on each Node’s IP at a static port
+  type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
 
 ---
 
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:5c0a6fe6a2d5f353ec2ca7bcb49a36a9eff8c4b9
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:8e1a81d7de50fb2049fcac7e0862afa0b1f6406a
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
 
@@ -89,7 +89,7 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 23.251.150.157
+  loadBalancerIP: 23.251.150.157      #for opening to cloud provider loadbalancer i.e. public
   type: LoadBalancer
 
 ---

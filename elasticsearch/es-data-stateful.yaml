@@ -60,7 +60,7 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: es-storage
-          mountPath: /data
+          mountPath: /data/elasticsearch
   volumeClaimTemplates:
   - metadata:
       name: es-storage
