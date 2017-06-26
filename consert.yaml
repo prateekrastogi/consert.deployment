@@ -15,8 +15,7 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 104.197.178.214
-  type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
+  type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. publics
 
 ---
 
@@ -69,7 +68,6 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 104.198.186.205
   type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
 
 ---
@@ -123,7 +121,6 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 23.251.150.157      #for opening to cloud provider loadbalancer i.e. public
   type: LoadBalancer
 
 ---
@@ -188,8 +185,7 @@ spec:
     role: mongo
   ports:
   - port: 27017
-    targetPort: 27017
-  loadBalancerIP: 104.154.26.177
+    targetPort: 27017                      #the port on the concerned cluster pods that needs to be attached to service
   type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
 
 ---
@@ -237,4 +233,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 32Gi
+          storage: 10Gi
