@@ -13,7 +13,7 @@ spec:
     app: frontend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80
+      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 104.197.178.214
   type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
@@ -67,7 +67,7 @@ spec:
     app: backend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80
+      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 104.198.186.205
   type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
@@ -121,7 +121,7 @@ spec:
     app: seeder                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80
+      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 23.251.150.157      #for opening to cloud provider loadbalancer i.e. public
   type: LoadBalancer
@@ -187,8 +187,8 @@ spec:
   selector:
     role: mongo
   ports:
-  - port: 27017
-    targetPort: 27017
+  - port: 27017                           #Mongo protocol not supported on cloudflare. Thus, no dns. so just using the gcp load balancer
+    targetPort: 27017                     #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 104.154.26.177
   type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
 

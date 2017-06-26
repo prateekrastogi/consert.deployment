@@ -11,7 +11,8 @@ spec:
     role: client
   ports:
   - name: http
-    port: 9200
+    port: 80
+    targetPort: 9200                     #the port on the concerned cluster pods that needs to be attached to service
     protocol: TCP
   loadBalancerIP: 104.198.252.222
   type: LoadBalancer

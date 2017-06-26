@@ -14,9 +14,7 @@ kubectl proxy                       #Must be continuously running to access the 
 
 ------Creating a deployment------
 
-kubectl create -f elasticsearch --record
-
-kubectl create -f stateful --record    #Directory Deployment
+kubectl create -f elasticsearch --record    #Directory Deployment
 
 kubectl create -f consert.yaml --record      #File Deployment
 
