@@ -15,7 +15,7 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 104.196.155.20
+  loadBalancerIP: 104.197.178.214
   type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
 
 ---
@@ -26,7 +26,7 @@ kind: Deployment
 metadata:
   name: frontend-deployment
 spec:
-  replicas: 1 # tells deployment to run 2 pods matching the template
+  replicas: 1 # tells deployment to run no. of pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -34,9 +34,26 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:e0ff2bb40c15933dd8b604cbfe62c95d5cd8da75
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:af0726ca289446b067cd9bbcdd78e32e7afa5ff9
         ports:
         - containerPort: 3000    #opens port for the other pods of kubernetes cluster
+
+---
+
+#Horizontal Pod Scaling of frontend Deployment
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
 
 ---
 
@@ -52,8 +69,8 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 104.196.213.171
-  type: LoadBalancer                      #Exposes the service on each Node’s IP at a static port
+  loadBalancerIP: 104.198.186.205
+  type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
 
 ---
 
@@ -63,7 +80,7 @@ kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 1 #tells deployment to run 2 pods matching the template
+  replicas: 1 #tells deployment to run no. of pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -71,9 +88,26 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:df043e92d6a582e781ca2f72f56dbf6b708d0a90
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:8e1a81d7de50fb2049fcac7e0862afa0b1f6406a
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
+
+---
+
+#Horizontal Pod Scaling of backend Deployment
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: backend
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
 
 ---
 
@@ -89,8 +123,8 @@ spec:
     - protocol: "TCP"
       port: 80
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 35.185.93.73
-  type: LoadBalancer                      #Exposes the service on each Node’s IP at a static port
+  loadBalancerIP: 23.251.150.157      #for opening to cloud provider loadbalancer i.e. public
+  type: LoadBalancer
 
 ---
 
@@ -111,6 +145,23 @@ spec:
         image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:15aedc6db4c36c761113bc6d5716a3380f0a059a
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
+
+---
+
+#Horizontal Pod Scaling of seeder Deployment
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: seeder
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: seeder
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
 
 ---
 
@@ -138,7 +189,8 @@ spec:
   ports:
   - port: 27017
     targetPort: 27017
-  clusterIP: None
+  loadBalancerIP: 104.154.26.177
+  type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
 
 ---
 
@@ -165,6 +217,7 @@ spec:
             - rs0
             - "--smallfiles"
             - "--noprealloc"
+            - "--enableMajorityReadConcern"
           ports:
             - containerPort: 27017
           volumeMounts:
@@ -184,108 +237,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 12Gi
-
----
-
-kind: StorageClass
-apiVersion: storage.k8s.io/v1beta1
-metadata:
-  name: elasticsearch
-provisioner: kubernetes.io/gce-pd
-parameters:
-  type: pd-ssd
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: elasticsearch
-  labels:
-    component: elasticsearch
-    role: data
-spec:
-  ports:
-  - port: 9300
-    name: transport
-  clusterIP: None
-  selector:
-    component: elasticsearch
-    role: data
-
----
-
-apiVersion: apps/v1beta1
-kind: StatefulSet
-metadata:
-  name: elasticsearch
-  labels:
-    component: elasticsearch
-    role: data
-spec:
-  serviceName: elasticsearch
-  replicas: 3
-  template:
-    metadata:
-      labels:
-        component: elasticsearch
-        role: data
-      annotations:
-        pod.beta.kubernetes.io/init-containers: '[
-          {
-          "name": "sysctl",
-            "image": "busybox",
-            "imagePullPolicy": "IfNotPresent",
-            "command": ["sysctl", "-w", "vm.max_map_count=262144"],
-            "securityContext": {
-              "privileged": true
-            }
-          }
-        ]'
-    spec:
-      containers:
-      - name: elasticsearch
-        securityContext:
-          privileged: true
-          capabilities:
-            add:
-              - IPC_LOCK
-        image: quay.io/pires/docker-elasticsearch-kubernetes:5.4.0
-        imagePullPolicy: Always
-        env:
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: NODE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: "CLUSTER_NAME"
-          value: "myesdb"
-        - name: NODE_MASTER
-          value: "false"
-        - name: NODE_INGEST
-          value: "false"
-        - name: HTTP_ENABLE
-          value: "false"
-        - name: "ES_JAVA_OPTS"
-          value: "-Xms256m -Xmx256m"
-        ports:
-        - containerPort: 9300
-          name: transport
-          protocol: TCP
-        volumeMounts:
-        - name: elasticsearch-persistent-storage
-          mountPath: /data/elasticsearch
-  volumeClaimTemplates:
-  - metadata:
-      name:  elasticsearch-persistent-storage
-      annotations:
-        volume.beta.kubernetes.io/storage-class: elasticsearch
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 12Gi
+          storage: 32Gi
