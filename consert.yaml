@@ -26,7 +26,7 @@ kind: Deployment
 metadata:
   name: frontend-deployment
 spec:
-  replicas: 1 # tells deployment to run 2 pods matching the template
+  replicas: 3 # tells deployment to run 2 pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -63,7 +63,7 @@ kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 1 #tells deployment to run 2 pods matching the template
+  replicas: 3 #tells deployment to run 2 pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
