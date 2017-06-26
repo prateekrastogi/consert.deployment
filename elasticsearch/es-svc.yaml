@@ -13,3 +13,5 @@ spec:
   - name: http
     port: 9200
     protocol: TCP
+  loadBalancerIP: 104.198.252.222
+  type: LoadBalancer

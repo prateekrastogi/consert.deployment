@@ -26,7 +26,7 @@ kind: Deployment
 metadata:
   name: frontend-deployment
 spec:
-  replicas: 3 # tells deployment to run 2 pods matching the template
+  replicas: 1 # tells deployment to run no. of pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -37,6 +37,23 @@ spec:
         image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:af0726ca289446b067cd9bbcdd78e32e7afa5ff9
         ports:
         - containerPort: 3000    #opens port for the other pods of kubernetes cluster
+
+---
+
+#Horizontal Pod Scaling of frontend Deployment
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
 
 ---
 
@@ -63,7 +80,7 @@ kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 3 #tells deployment to run 2 pods matching the template
+  replicas: 1 #tells deployment to run no. of pods matching the template
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -74,6 +91,23 @@ spec:
         image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:8e1a81d7de50fb2049fcac7e0862afa0b1f6406a
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
+
+---
+
+#Horizontal Pod Scaling of backend Deployment
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: backend
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
 
 ---
 
@@ -114,6 +148,23 @@ spec:
 
 ---
 
+#Horizontal Pod Scaling of seeder Deployment
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: seeder
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: seeder
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+
+---
+
 # Creating StorageClass for mongodb
 apiVersion: storage.k8s.io/v1beta1
 kind: StorageClass
@@ -138,7 +189,8 @@ spec:
   ports:
   - port: 27017
     targetPort: 27017
-  clusterIP: None
+  loadBalancerIP: 104.154.26.177
+  type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
 
 ---
 
