@@ -13,7 +13,7 @@ spec:
     app: frontend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 443                        #Always opening the port 443 externally due to issue revolving exposing port on cloudflare and loadbalancer
+      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 104.197.178.214
   type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:af0726ca289446b067cd9bbcdd78e32e7afa5ff9
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:d2ad3368cf0bd9a7ce14c097a6cd3be30c1fc7ea
         ports:
         - containerPort: 3000    #opens port for the other pods of kubernetes cluster
 
@@ -67,7 +67,7 @@ spec:
     app: backend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 443                        #Always opening the port 443 externally due to issue revolving exposing port on cloudflare and loadbalancer
+      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 104.198.186.205
   type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
@@ -88,7 +88,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:61d5d0f80a1153197f290f2198a6218dd3aa1d96
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:517811b3d271b5770513d85807affa633179955d
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
 
@@ -121,7 +121,7 @@ spec:
     app: seeder                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 443                        #Always opening the port 443 externally due to issue revolving exposing port on cloudflare and loadbalancers
+      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
   loadBalancerIP: 23.251.150.157      #for opening to cloud provider loadbalancer i.e. public
   type: LoadBalancer
@@ -142,7 +142,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:15aedc6db4c36c761113bc6d5716a33443f0a059a
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:3298f7431253854eee5889d6483c53947860c2d1
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
