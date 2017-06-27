@@ -53,7 +53,7 @@ spec:
         - name: HTTP_ENABLE
           value: "true"
         - name: "ES_JAVA_OPTS"
-          value: "-Xms256m -Xmx2048m"
+          value: "-Xms256m -Xmx256m"
         ports:
         - containerPort: 9200
           name: http
