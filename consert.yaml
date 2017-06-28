@@ -13,10 +13,8 @@ spec:
     app: frontend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
+      port: 3000                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 104.197.178.214
-  type: LoadBalancer                #for opening to cloud provider loadbalancer i.e. public
 
 ---
 
@@ -52,8 +50,8 @@ spec:
     kind: Deployment
     name: frontend
   minReplicas: 1
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 80
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
 
 ---
 
@@ -66,11 +64,14 @@ spec:
   selector:
     app: backend                    #selection of service by label
   ports:
-    - protocol: "TCP"
-      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
+    - name: http
+      protocol: "TCP"
+      port: 3100                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 104.198.186.205
-  type: LoadBalancer                      #for opening to cloud provider loadbalancer i.e. public
+    - name: ws
+      protocol: "TCP"
+      port: 5000
+      targetPort: 5000                #the port on the concerned cluster pods that needs to be attached to service
 
 ---
 
@@ -88,9 +89,12 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:7f6ba4960707937fcac60a4edfa996525e4a1630
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:a412a3d8bf3c74962782bb895f62d5c3aa9c3e71
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
+          name: http
+        - containerPort: 5000
+          name: ws
 
 ---
 
@@ -106,8 +110,8 @@ spec:
     kind: Deployment
     name: backend
   minReplicas: 1
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 80
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
 
 ---
 
@@ -121,10 +125,8 @@ spec:
     app: seeder                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
+      port: 3200                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
-  loadBalancerIP: 23.251.150.157      #for opening to cloud provider loadbalancer i.e. public
-  type: LoadBalancer
 
 ---
 
@@ -161,79 +163,7 @@ spec:
     name: seeder
   minReplicas: 1
   maxReplicas: 2
-  targetCPUUtilizationPercentage: 80
+  targetCPUUtilizationPercentage: 70
 
 ---
 
-# Creating StorageClass for mongodb
-apiVersion: storage.k8s.io/v1beta1
-kind: StorageClass
-metadata:
-  name: mongodb
-provisioner: kubernetes.io/gce-pd
-parameters:
-  type: pd-ssd
-
----
-
-#Creating Mongo Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongo
-  labels:
-    name: mongo
-spec:
-  selector:
-    role: mongo
-  ports:
-  - port: 27017                           #Mongo protocol not supported on cloudflare. Thus, no dns. so just using the gcp load balancer
-    targetPort: 27017                     #the port on the concerned cluster pods that needs to be attached to service
-  clusterIP: None
-
----
-
-#Deploying mongodb cluster with StatefulSets
-apiVersion: apps/v1beta1
-kind: StatefulSet
-metadata:
-  name: mongo
-spec:
-  serviceName: "mongo"
-  replicas: 3
-  template:
-    metadata:
-      labels:
-        role: mongo
-    spec:
-      terminationGracePeriodSeconds: 10
-      containers:
-        - name: mongo
-          image: mongo
-          command:
-            - mongod
-            - "--replSet"
-            - rs0
-            - "--smallfiles"
-            - "--noprealloc"
-            - "--enableMajorityReadConcern"
-          ports:
-            - containerPort: 27017
-          volumeMounts:
-            - name: mongo-persistent-storage
-              mountPath: /data/mongodb
-        - name: mongo-sidecar
-          image: cvallance/mongo-k8s-sidecar
-          env:
-            - name: MONGO_SIDECAR_POD_LABELS
-              value: "role=mongo"
-  volumeClaimTemplates:
-  - metadata:
-      name: mongo-persistent-storage
-      annotations:
-        volume.beta.kubernetes.io/storage-class: "mongodb"
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 32Gi
