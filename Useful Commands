@@ -14,7 +14,7 @@ kubectl proxy                       #Must be continuously running to access the 
 
 ------Creating a deployment------
 
-kubectl create -f elasticsearch --recursive    #Directory Deployment recursively
+kubectl create -f elasticsearch --recursive    #Recursive directory deployment
 
 kubectl create -f consert.yaml      #File Deployment
 
@@ -54,3 +54,7 @@ kubectl edit deployment/frontend-deployment      #Opens the concerned deployment
 kubectl edit statefulsets/mongo
 
 
+------Secret------
+
+Kubernetes secret Kind in yaml requires base64 encoded strings while the certificate generated from cloudflare are in .pem format.
+So, use online base64 encoder/decoder to get the desired formats.
