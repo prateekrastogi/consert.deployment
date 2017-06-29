@@ -91,7 +91,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:a412a3d8bf3c74962782bb895f62d5c3aa9c3e71
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:18a2060c81fa44bdb153f5c7dbb0199aaf10e548
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
           name: http
@@ -146,7 +146,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:84d4c59ec8a1f3d97759433d766ee21a766f7453
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:4f19ce7d93d15fd5d577dee403509e47af4fa838
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
