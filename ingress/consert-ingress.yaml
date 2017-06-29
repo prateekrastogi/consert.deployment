@@ -1,4 +1,4 @@
-#Only using either 80 or 8080 as open service ports due to limitation of GCP L7 LoadBalancer
+#Only using either 80 or 8080 as service ports due to limitations of GCP L7 LoadBalancer
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
