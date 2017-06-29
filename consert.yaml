@@ -1,6 +1,7 @@
-#Valid for kubectl 1.6.4 & kubernetes 1.6.4
+#Valid for kubectl 1.6.6 & kubernetes 1.6.6
 #Very flaky default api-Versioning provided. Take extreme caution while changing api-Version fields. It is different from what was stated in docs.
 #Deployment takes some time to properly deploy and connect all components with each other. Have some patience while staging.
+#Always opening the port 80, or 8080 externally due to issues revolving exposing port on loadBalancer(Both cloudflare and GCP)
 
 
 # Creating service for frontend
@@ -13,7 +14,7 @@ spec:
     app: frontend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and gcp loadbalancer
+      port: 80
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
   type: NodePort                      #Requirements for ingress
 
@@ -67,7 +68,7 @@ spec:
   ports:
     - name: http
       protocol: "TCP"
-      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
+      port: 80
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
     - name: ws
       protocol: "TCP"
@@ -127,8 +128,8 @@ spec:
     app: seeder                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
-      targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
+      port: 80
+      targetPort: 3200             #The port on the concerned cluster pods that needs to be attached to service
   type: NodePort
 ---
 
