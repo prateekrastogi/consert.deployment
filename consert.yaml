@@ -67,7 +67,7 @@ spec:
   ports:
     - name: http
       protocol: "TCP"
-      port: 3100                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
+      port: 80                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
     - name: ws
       protocol: "TCP"
@@ -127,7 +127,7 @@ spec:
     app: seeder                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 3200                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
+      port: 80                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
   type: NodePort
 ---
