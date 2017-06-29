@@ -1,4 +1,4 @@
-# Choosing either port 80 or 8080 as service port due to gcp L7 loadBalancer limitations. It can only work on 80 or 8080
+#Only using either 80 or 8080 as open service ports due to limitation of GCP L7 LoadBalancer
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -25,18 +25,4 @@ spec:
       - path:
         backend:
           serviceName: backend
-          servicePort: 80
-  - host: accounts.consert.live
-    http:
-      paths:
-      - path:
-        backend:
-          serviceName: backend
-          servicePort: 8080
-  - host: seeder.consert.live
-    http:
-      paths:
-      - path:
-        backend:
-          serviceName: seeder
           servicePort: 80
