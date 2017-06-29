@@ -14,7 +14,7 @@ kubectl proxy                       #Must be continuously running to access the 
 
 ------Creating a deployment------
 
-kubectl create -f elasticsearch --recursive    #Recursive directory deployment
+kubectl create -f stateful --recursive    #Recursive directory deployment
 
 kubectl create -f consert.yaml      #File Deployment
 

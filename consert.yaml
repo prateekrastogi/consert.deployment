@@ -15,7 +15,7 @@ spec:
     - protocol: "TCP"
       port: 3000                        #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
-
+  type: NodePort                      #Requirements for ingress
 ---
 
 #Deploying frontend on kubernetes cluster
@@ -50,7 +50,7 @@ spec:
     kind: Deployment
     name: frontend
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 70
 
 ---
@@ -72,6 +72,7 @@ spec:
       protocol: "TCP"
       port: 5000
       targetPort: 5000                #the port on the concerned cluster pods that needs to be attached to service
+  type: NodePort
 
 ---
 
@@ -110,7 +111,7 @@ spec:
     kind: Deployment
     name: backend
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 70
 
 ---
@@ -127,7 +128,7 @@ spec:
     - protocol: "TCP"
       port: 3200                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancers
       targetPort: 3200                #the port on the concerned cluster pods that needs to be attached to service
-
+  type: NodePort
 ---
 
 #Deploying seeder on kubernetes cluster
@@ -162,7 +163,7 @@ spec:
     kind: Deployment
     name: seeder
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 70
 
 ---
