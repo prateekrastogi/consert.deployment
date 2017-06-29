@@ -21,7 +21,7 @@ spec:
         backend:
           serviceName: frontend
           servicePort: 80
-  - host: www.consert.live                          #If user type with www in browser, somehow this doesn't work on sub-domains. Not even on google sub-damains( login, cloud. So, may be glbc issue. Also, some other quite major websites doesn't have this functionality. Those who implement it, do it by a simple 301 redirect. Also, ingress is a beta resource with very poor documentation.
+  - host: www.consert.live                          #If user type with www in browser, somehow this doesn't work on sub-domains. Not even on google sub-damains( login, cloud. So, may be glbc issue. Also, some other quite major websites doesn't have this functionality. Those who implement it, do it by a simple 301 redirect which is not working properly with cloudflare. To add to the pain, ingress is a beta resource with very poor documentation.
     http:
       paths:
       - path:
