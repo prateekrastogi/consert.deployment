@@ -70,9 +70,22 @@ spec:
       protocol: "TCP"
       port: 80
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
-    - name: ws
+  type: NodePort
+
+---
+
+# Creating separate backend websocket service for ingress as ingress cann't take same service for two different forwarding rules
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-ws
+spec:
+  selector:
+    app: backend                    #selection of service by label
+  ports:
+    - name: http
       protocol: "TCP"
-      port: 8080
+      port: 80
       targetPort: 5000                #the port on the concerned cluster pods that needs to be attached to service
   type: NodePort
 

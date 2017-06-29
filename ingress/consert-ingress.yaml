@@ -1,4 +1,6 @@
 #Only using either 80 or 8080 as service ports due to limitations of GCP L7 LoadBalancer
+#Any changes to the paths take 5-10 minutes to reflect. Be very patient
+#Always use kubectl replace command to upgrade ingress. Otherwise, service will go down and everything will be messed up
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -19,10 +21,31 @@ spec:
         backend:
           serviceName: frontend
           servicePort: 80
+  - host: www.consert.live                          #If user type with www in browser, somehow this doesn't work on sub-domains. Not even on google sub-damains( login, cloud. So, may be glbc issue. Also, some other quite major websites doesn't have this functionality. Those who implement it, do it by a simple 301 redirect. Also, ingress is a beta resource with very poor documentation.
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: frontend
+          servicePort: 80
   - host: accounts.consert.live
     http:
       paths:
       - path:
         backend:
           serviceName: backend
+          servicePort: 80
+  - host: backend-ws.consert.live
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: backend-ws
+          servicePort: 80
+  - host: seeder.consert.live
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: seeder
           servicePort: 80

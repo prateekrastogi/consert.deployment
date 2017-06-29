@@ -23,6 +23,7 @@ kubectl create -f consert.yaml      #File Deployment
 
 kubectl apply -f consert.yaml --record        #Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
 
+kubectl replace -f ingress                    #For updating a ingress always run this command on a modified Ingress yaml file not apply
 
 ------Deleting a deployment------
 
