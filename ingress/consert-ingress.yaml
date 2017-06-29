@@ -11,5 +11,5 @@ spec:
   backend:
     # This assumes frontend exists and routes to healthy endpoints.
     serviceName: frontend
-    servicePort: 80
+    servicePort: 80                     # Keep all service ports to 80 due to issues around loadbalancer
 

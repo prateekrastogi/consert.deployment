@@ -13,7 +13,7 @@ spec:
     app: frontend                    #selection of service by label
   ports:
     - protocol: "TCP"
-      port: 80                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and loadbalancer
+      port: 80                       #Always opening the port 80 externally due to issue revolving exposing port on cloudflare and gcp loadbalancer
       targetPort: 3000                #the port on the concerned cluster pods that needs to be attached to service
   type: NodePort                      #Requirements for ingress
 
@@ -71,7 +71,7 @@ spec:
       targetPort: 3100                #the port on the concerned cluster pods that needs to be attached to service
     - name: ws
       protocol: "TCP"
-      port: 5000
+      port: 8080
       targetPort: 5000                #the port on the concerned cluster pods that needs to be attached to service
   type: NodePort
 
@@ -146,7 +146,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:4f19ce7d93d15fd5d577dee403509e47af4fa838
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:e7474c2350dfec9daceebee42a0f289cbd871239
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
