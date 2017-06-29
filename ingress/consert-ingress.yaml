@@ -4,12 +4,24 @@ metadata:
   name: consert-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: consert
 spec:
   tls:
-  # This assumes tls-secret exists.
-  - secretName: consert-secret
-  backend:
-    # This assumes frontend exists and routes to healthy endpoints.
-    serviceName: frontend
-    servicePort: 80                     # Keep all service ports to 80 due to issues around loadbalancer(ingress, cloudflare etc.)
-
+  - hosts:
+    - consert.live
+    secretName: consert-secret
+  rules:
+  - host: consert.live
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: frontend
+          servicePort: 80
+  - host: accounts.consert.live
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: backend
+          servicePort: 80

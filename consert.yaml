@@ -146,7 +146,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:e7474c2350dfec9daceebee42a0f289cbd871239
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:4d78d29ebb66a3ef9beb5213c47c47d692a9a09a
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
