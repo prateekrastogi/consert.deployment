@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:c2abdce583a153e9de27ac5afc535c69a599563a
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:7f7db5924c482bd14d5681ba1cae0faa7dd85008
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
           name: http
@@ -160,7 +160,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:1645d7cdc0f004f3f2817508497aa3fb56081a60
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:aac1c4bccede731fd75b43cebc5f6d5c50f05f9c
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
@@ -183,3 +183,77 @@ spec:
 
 ---
 
+# MongoDb StatefulSet Deployment
+# Deploying mongo from this file due to 'primary not found issue' if it is launched from separate file..
+# Creating StorageClass for mongodb
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+  name: mongodb
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+
+---
+
+#Creating Mongo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    name: mongo
+spec:
+  selector:
+    role: mongo
+  ports:
+  - port: 27017                           #Mongo protocol not supported on cloudflare. Thus, no dns. so just using the gcp load balancer
+    targetPort: 27017                     #the port on the concerned cluster pods that needs to be attached to service
+  clusterIP: None
+
+---
+
+#Deploying mongodb cluster with StatefulSets
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  serviceName: "mongo"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        role: mongo
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mongo
+          image: mongo
+          command:
+            - mongod
+            - "--replSet"
+            - rs0
+            - "--smallfiles"
+            - "--noprealloc"
+            - "--enableMajorityReadConcern"
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/mongodb
+        - name: mongo-sidecar
+          image: cvallance/mongo-k8s-sidecar
+          env:
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "role=mongo"
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-persistent-storage
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "mongodb"
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 32Gi
