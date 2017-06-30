@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:18a2060c81fa44bdb153f5c7dbb0199aaf10e548
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:c2abdce583a153e9de27ac5afc535c69a599563a
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
           name: http
@@ -160,7 +160,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:4d78d29ebb66a3ef9beb5213c47c47d692a9a09a
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:1645d7cdc0f004f3f2817508497aa3fb56081a60
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
@@ -178,8 +178,8 @@ spec:
     kind: Deployment
     name: seeder
   minReplicas: 1
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 70
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
 
 ---
 
