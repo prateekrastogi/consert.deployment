@@ -14,14 +14,14 @@ kubectl proxy                       #Must be continuously running to access the 
 
 ------Creating a deployment------
 
-kubectl create -f stateful --recursive    #Recursive directory deployment
+kubectl create -f elasticsearch --recursive    #Recursive directory deployment
 
 kubectl create -f consert.yaml      #File Deployment
 
 
 ------Updating a deployment----
 
-kubectl apply -f consert.yaml --record        #Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
+kubectl apply -f consert.yaml                 #Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
 
 kubectl replace -f ingress                    #For updating a ingress always run this command on a modified Ingress yaml file not apply
 
