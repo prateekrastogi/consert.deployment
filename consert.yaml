@@ -105,7 +105,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:8a908485061935631eb2f08a957cbb75665d596b
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:6de70312494e143e4cc1040412d06e54023d4404
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
           name: http
