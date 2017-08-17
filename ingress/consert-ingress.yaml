@@ -28,7 +28,7 @@ spec:
         backend:
           serviceName: frontend
           servicePort: 80
-  - host: accounts.consert.live
+  - host: backend.consert.live
     http:
       paths:
       - path:
