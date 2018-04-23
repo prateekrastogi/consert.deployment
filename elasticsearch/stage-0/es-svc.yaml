@@ -1,15 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: elasticsearch-discovery
+  name: elasticsearch
   labels:
     component: elasticsearch
-    role: master
+    role: client
 spec:
   selector:
     component: elasticsearch
-    role: master
+    role: client
   ports:
-  - name: transport
-    port: 9300
-    protocol: TCP
+  - name: http
+    port: 9200
