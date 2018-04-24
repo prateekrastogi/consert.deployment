@@ -7,27 +7,40 @@ gcloud container clusters get-credentials production --zone us-central1-a --proj
 Use "kubectl <command> -h" for more information about a given command.
 
 
-------Open Kubernetes Dashboard------
-
-kubectl proxy                       #Must be continuously running to access the dashboard
-
-
 ------Creating a deployment------
 
-kubectl create -f elasticsearch --recursive    #Recursive directory deployment
+1. kubectl create -f elasticsearch/stage-0 --recursive  #Recursive directory deployment
 
-kubectl create -f consert.yaml      #File Deployment
+2. kubectl create -f elasticsearch/stage-1 --recursive 
+
+3. kubectl create -f mongo  --recursive
+
+4. kubectl create -f consert.yaml      #File Deployment
+
+
+------Accessing Services Dashboards------
+
+1. kubectl proxy                       
+    #Must be continuously running to access the dashboards
+
+2. Kubernetes Dashboard URL: localhost:8001/ui
+    #Kubernetes dashboard will ask for config file to login. But, in windows its not properly working. So, open %USER%/.kube/config file and copy 'access-token' sub-field inside 'auth-provider' field, and provide that copied token to the login page token form field.
+
+3. Kibana URL: localhost:8001/api/v1/namespaces/default/services/kibana:http/proxy
 
 
 ------Updating a deployment----
 
-kubectl apply -f consert.yaml                 #Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
+kubectl apply -f FILENAME [options e.g. --recursive]                 
+#Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
 
-kubectl replace -f ingress                    #For updating a ingress always run this command on a modified Ingress yaml file not apply
+kubectl replace -f ingress                    
+#For updating a ingress always run this command on a modified Ingress yaml file not 'apply'
+
 
 ------Deleting a deployment------
 
-kubectl delete -f consert.yaml
+kubectl delete -f FILENAME [options e.g. --recursive]
 
 
 ------Convert config files between different API version of Kubernetes------
@@ -37,7 +50,7 @@ kubectl convert -f FILENAME [options]
 
 ------Managing a Particular Deployment/StatefulSets Rollout------
 
-[ Use Mainly to avoid real-time catastrophic issues in a particular deployment/statefulsets i.e. should never be used ]
+# Use Mainly to avoid real-time catastrophic issues in a particular deployment/statefulsets i.e.     should never be used
 
 kubectl rollout history deployment/frontend-deployment
 
