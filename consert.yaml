@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:af51d0e33cb1e59f03bae48917fb4d31bfcb3ef9
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-frontend:production
         ports:
         - containerPort: 3000    #opens port for the other pods of kubernetes cluster
 
@@ -115,7 +115,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:c1c58d0e99af4da7f50d8492fee4454bf81a085a
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-backend:production
         ports:
         - containerPort: 3100    #opens port for the other pods of kubernetes cluster
           name: http
@@ -158,7 +158,7 @@ spec:
       port: 80
       targetPort: 3200             #The port on the concerned cluster pods that needs to be attached to service
   type: NodePort
-  
+
 ---
 
 #Deploying seeder on kubernetes cluster
@@ -178,7 +178,7 @@ spec:
     spec:
       containers:
       - name: seeder
-        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:2b359f3f4f32b62a1daaefb856c3031b926e7d11
+        image: gcr.io/consert-171717/bitbucket-prateekrastogi-seeder:production
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
 
