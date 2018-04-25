@@ -1,5 +1,5 @@
-#Valid for kubectl 1.6.6 & kubernetes 1.6.6
-#Very flaky default api-Versioning provided. Take extreme caution while changing api-Version fields. It is different from what was stated in docs.
+#Valid for kubectl 1.9.6 & kubernetes 1.9.6
+#Very flaky default api-Versioning provided. Take extreme caution while changing api-Version fields, or upgrading kubernetes version.
 #Deployment takes some time to properly deploy and connect all components with each other. Have some patience while staging.
 #Always opening the port 80, or 8080 externally due to issues revolving exposing port on loadBalancer(Both cloudflare and GCP)
 
@@ -21,12 +21,15 @@ spec:
 ---
 
 #Deploying frontend on kubernetes cluster
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
 spec:
   replicas: 1 # tells deployment to run no. of pods matching the template
+  selector:
+    matchLabels:
+      app: frontend
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -41,19 +44,23 @@ spec:
 ---
 
 #Horizontal Pod Scaling of frontend Deployment
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: frontend
   namespace: default
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1beta1
+    apiVersion: apps/v1
     kind: Deployment
     name: frontend
   minReplicas: 1
   maxReplicas: 3
-  targetCPUUtilizationPercentage: 70
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
 
 ---
 
@@ -92,12 +99,15 @@ spec:
 ---
 
 #Deploying backend on kubernetes cluster
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
 spec:
   replicas: 1 #tells deployment to run no. of pods matching the template
+  selector:
+    matchLabels:
+      app: backend  
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -115,19 +125,23 @@ spec:
 ---
 
 #Horizontal Pod Scaling of backend Deployment
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: backend
   namespace: default
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1beta1
+    apiVersion: apps/v1
     kind: Deployment
     name: backend
   minReplicas: 1
   maxReplicas: 3
-  targetCPUUtilizationPercentage: 70
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70
 
 ---
 
@@ -147,12 +161,15 @@ spec:
 ---
 
 #Deploying seeder on kubernetes cluster
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: seeder-deployment
 spec:
   replicas: 1 # tells deployment to run 2 pods matching the template
+  selector:
+    matchLabels:
+      app: seeder
   template: # create pods using pod definition in this template
     metadata:
       labels:
@@ -167,16 +184,20 @@ spec:
 ---
 
 #Horizontal Pod Scaling of seeder Deployment
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: seeder
   namespace: default
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1beta1
+    apiVersion: apps/v1
     kind: Deployment
     name: seeder
   minReplicas: 1
   maxReplicas: 2
-  targetCPUUtilizationPercentage: 80
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 80
