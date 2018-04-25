@@ -28,6 +28,7 @@ Use "kubectl <command> -h" for more information about a given command.
 
 3. Kibana URL: localhost:8001/api/v1/namespaces/default/services/kibana:http/proxy
 
+4. NoSqlClient URL: localhost:8001/api/v1/namespaces/default/services/nosqlclient:http/proxy
 
 ------Updating a deployment----
 

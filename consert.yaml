@@ -158,6 +158,7 @@ spec:
       port: 80
       targetPort: 3200             #The port on the concerned cluster pods that needs to be attached to service
   type: NodePort
+  
 ---
 
 #Deploying seeder on kubernetes cluster
