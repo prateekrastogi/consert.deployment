@@ -21,7 +21,7 @@ spec:
 ---
 
 #Deploying frontend on kubernetes cluster
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: frontend-deployment
@@ -99,7 +99,7 @@ spec:
 ---
 
 #Deploying backend on kubernetes cluster
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: backend-deployment
@@ -162,7 +162,7 @@ spec:
 ---
 
 #Deploying seeder on kubernetes cluster
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: seeder-deployment
