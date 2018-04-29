@@ -4,10 +4,26 @@ gcloud container clusters get-credentials staging --zone us-east1-b --project co
 
 gcloud container clusters get-credentials production --zone us-central1-a --project consert-171717
 
-Use "kubectl <command> -h" for more information about a given command.
-
-
 ------Creating a deployment------
+
+install helm & kubectl
+ git clone https://github.com/clockworksoul/helm-elasticsearch.git elasticsearch
+
+helm install -f elasticsearch/values.yaml  elasticsearch/elasticsearch --name elastic
+
+helm upgrade -f elasticsearch/values.yaml elastic  elasticsearch/elasticsearch
+
+helm delete elastic
+
+helm del --purge elastic
+
+helm install -f mongo/values.yaml stable/mongodb-replicaset --name mongo
+
+helm delete mongo
+
+helm del --purge mongo
+
+kubectl create -f ssd.yaml
 
 1. kubectl create -f elasticsearch/stage-0 --recursive  #Recursive directory deployment
 
