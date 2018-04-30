@@ -18,6 +18,8 @@ gcloud container clusters get-credentials production --zone us-central1-a --proj
 
 6. kubectl create -f consert.yaml
 
+7. kubectl create -f ingress --recursive
+
 ------Accessing Services Dashboards------
 
 1. kubectl proxy                       
