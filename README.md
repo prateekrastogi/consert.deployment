@@ -6,7 +6,8 @@ gcloud container clusters get-credentials production --zone us-central1-a --proj
 
 ------Creating a deployment------
 
-1. Install Helm & Kubectl
+1. Install Helm & Kubectl   
+#Create Helm's Tiller service account and patch tiller deploy using: https://gist.github.com/prateekrastogi/b7d703ad7052046032ebfa55da813606  
 
 2. kubectl create -f init --recursive         #Recursive directory deployment
 
