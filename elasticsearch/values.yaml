@@ -159,6 +159,7 @@ kibana:
     requests:
       cpu: 100m
   env:
+    SERVER_BASEPATH: "/api/v1/proxy/namespaces/default/services/elastic-elasticsearch-kibana"   #Enables access through kubectl proxy
     # XPACK_GRAPH_ENABLED: "false"
     # XPACK_ML_ENABLED: "false"
     # XPACK_REPORTING_ENABLED: "false"
