@@ -4,19 +4,19 @@ gcloud container clusters get-credentials staging --zone us-east1-b --project co
 
 gcloud container clusters get-credentials production --zone us-central1-a --project consert-171717
 
-Use "kubectl <command> -h" for more information about a given command.
-
-
 ------Creating a deployment------
 
-1. kubectl create -f elasticsearch/stage-0 --recursive  #Recursive directory deployment
+1. Install Helm & Kubectl
 
-2. kubectl create -f elasticsearch/stage-1 --recursive 
+2. kubectl create -f init --recursive         #Recursive directory deployment
 
-3. kubectl create -f mongo  --recursive
+3. git clone https://github.com/clockworksoul/helm-elasticsearch.git elasticsearch
 
-4. kubectl create -f consert.yaml      #File Deployment
+4. helm install -f elasticsearch/values.yaml elasticsearch/elasticsearch --name elastic
 
+5. helm install -f mongo/values.yaml stable/mongodb-replicaset --name mongo
+
+6. kubectl create -f consert.yaml
 
 ------Accessing Services Dashboards------
 
@@ -35,6 +35,12 @@ Use "kubectl <command> -h" for more information about a given command.
 kubectl apply -f FILENAME [options e.g. --recursive]                 
 #Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
 
+helm upgrade -f elasticsearch/values.yaml elastic elasticsearch/elasticsearch
+#For updating elasticsearch helm release
+
+helm upgrade -f mongo/values.yaml mongo stable/mongodb-replicaset
+#For upgrading mongodb helm release 
+
 kubectl replace -f ingress                    
 #For updating a ingress always run this command on a modified Ingress yaml file not 'apply'
 
@@ -43,6 +49,11 @@ kubectl replace -f ingress
 
 kubectl delete -f FILENAME [options e.g. --recursive]
 
+helm delete mongo
+helm del --purge mongo
+
+helm delete elastic
+helm del --purge elastic
 
 ------Convert config files between different API version of Kubernetes------
 

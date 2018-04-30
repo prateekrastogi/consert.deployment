@@ -1,0 +1,36 @@
+# Creating service for nosqlclient
+apiVersion: v1
+kind: Service
+metadata:
+  name: nosqlclient
+spec:
+  selector:
+    app: nosqlclient                  #selection of service by label
+  ports:
+    - name: http
+      port: 80
+      targetPort: mongoclient         #the port on the concerned cluster pods that needs to be attached to service
+
+---
+
+#Deploying nosqlclient on kubernetes cluster
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nosqlclient-deployment
+spec:
+  replicas: 1 # tells deployment to run no. of pods matching the template
+  selector:
+    matchLabels:
+      app: nosqlclient
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: nosqlclient          #labels for service selector to work properly
+    spec:
+      containers:
+      - name: nosqlclient
+        image: mongoclient/mongoclient
+        ports:
+        - containerPort: 3000    #opens port for the other pods of kubernetes cluster
+          name: mongoclient
