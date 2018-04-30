@@ -1,7 +1,7 @@
 #Only using either 80 or 8080 as service ports due to limitations of GCP L7 LoadBalancer
 #Any changes to the paths take 5-10 minutes to reflect. Be very patient
 #Always use kubectl replace command to upgrade ingress. Otherwise, service will go down and everything will be messed up
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Ingress
 metadata:
   name: consert-ingress
