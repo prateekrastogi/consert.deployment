@@ -6,33 +6,17 @@ gcloud container clusters get-credentials production --zone us-central1-a --proj
 
 ------Creating a deployment------
 
-install helm & kubectl
- git clone https://github.com/clockworksoul/helm-elasticsearch.git elasticsearch
+1. Install Helm & Kubectl
 
-helm install -f elasticsearch/values.yaml  elasticsearch/elasticsearch --name elastic
+2. kubectl create -f init --recursive         #Recursive directory deployment
 
-helm upgrade -f elasticsearch/values.yaml elastic  elasticsearch/elasticsearch
+3. git clone https://github.com/clockworksoul/helm-elasticsearch.git elasticsearch
 
-helm delete elastic
+4. helm install -f elasticsearch/values.yaml elasticsearch/elasticsearch --name elastic
 
-helm del --purge elastic
+5. helm install -f mongo/values.yaml stable/mongodb-replicaset --name mongo
 
-helm install -f mongo/values.yaml stable/mongodb-replicaset --name mongo
-
-helm delete mongo
-
-helm del --purge mongo
-
-kubectl create -f ssd.yaml
-
-1. kubectl create -f elasticsearch/stage-0 --recursive  #Recursive directory deployment
-
-2. kubectl create -f elasticsearch/stage-1 --recursive 
-
-3. kubectl create -f mongo  --recursive
-
-4. kubectl create -f consert.yaml      #File Deployment
-
+6. kubectl create -f consert.yaml
 
 ------Accessing Services Dashboards------
 
@@ -51,6 +35,12 @@ kubectl create -f ssd.yaml
 kubectl apply -f FILENAME [options e.g. --recursive]                 
 #Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
 
+helm upgrade -f elasticsearch/values.yaml elastic elasticsearch/elasticsearch
+#For updating elasticsearch helm release
+
+helm upgrade -f mongo/values.yaml mongo stable/mongodb-replicaset
+#For upgrading mongodb helm release 
+
 kubectl replace -f ingress                    
 #For updating a ingress always run this command on a modified Ingress yaml file not 'apply'
 
@@ -59,6 +49,11 @@ kubectl replace -f ingress
 
 kubectl delete -f FILENAME [options e.g. --recursive]
 
+helm delete mongo
+helm del --purge mongo
+
+helm delete elastic
+helm del --purge elastic
 
 ------Convert config files between different API version of Kubernetes------
 
