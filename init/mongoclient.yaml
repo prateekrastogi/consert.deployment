@@ -14,7 +14,7 @@ spec:
 ---
 
 #Deploying nosqlclient on kubernetes cluster
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: nosqlclient-deployment
