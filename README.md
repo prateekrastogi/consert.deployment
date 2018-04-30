@@ -29,9 +29,9 @@ gcloud container clusters get-credentials production --zone us-central1-a --proj
 2. Kubernetes Dashboard URL: localhost:8001/ui
     #Kubernetes dashboard will ask for config file to login. But, in windows its not properly working. So, open %USER%/.kube/config file and copy 'access-token' sub-field inside 'auth-provider' field, and provide that copied token to the login page token form field.
 
-3. Kibana URL: localhost:8001/api/v1/namespaces/default/services/kibana:http/proxy
+3. Kibana URL: localhost:8001/api/v1/proxy/namespaces/default/services/elastic-elasticsearch-kibana
 
-4. NoSqlClient URL: localhost:8001/api/v1/namespaces/default/services/nosqlclient:http/proxy
+4. NoSqlClient URL: localhost:8001/api/v1/proxy/namespaces/default/services/nosqlclient:http
 
 ------Updating a deployment----
 
