@@ -40,6 +40,7 @@ spec:
         image: gcr.io/consert-171718/bitbucket-prateekrastogi-frontend:production
         ports:
         - containerPort: 3000    #opens port for the other pods of kubernetes cluster
+        imagePullPolicy: Always
 
 ---
 
@@ -121,6 +122,7 @@ spec:
           name: http
         - containerPort: 5000
           name: ws
+        imagePullPolicy: Always  
 
 ---
 
@@ -181,6 +183,7 @@ spec:
         image: gcr.io/consert-171718/bitbucket-prateekrastogi-seeder:production
         ports:
         - containerPort: 3200    #opens port for the other pods of kubernetes cluster
+        imagePullPolicy: Always
 
 ---
 
