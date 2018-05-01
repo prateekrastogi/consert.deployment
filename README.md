@@ -51,7 +51,7 @@ helm upgrade -f mongo/values.yaml mongo stable/mongodb-replicaset
 kubectl replace -f ingress                    
 #For updating a ingress always run this command on a modified Ingress yaml file not 'apply'
 
-kubectl replace --force -f FILENAME
+kubectl replace -f FILENAME
 #Force replaces the deployment by deleting and then creating the resources. Use it for UPDATING DEPLOYMENTS.
 
 #Below one is very rarely used. Read its description before using.
