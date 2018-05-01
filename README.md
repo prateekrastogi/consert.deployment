@@ -5,6 +5,7 @@ gcloud container clusters get-credentials staging --zone us-east1-b --project co
 gcloud container clusters get-credentials production --zone us-central1-a --project consert-171717
 
 ------Creating a deployment------
+# Initiate the deployment with 6 node cluster for properly deploying services such as elasticsearch etc.       Afterwards, scale down the no. of instances to 3 or 4 nodes to maximize utilization.
 
 1. Install Helm & Kubectl   
 #Create Helm's Tiller service account and patch tiller deploy using: https://gist.github.com/prateekrastogi/b7d703ad7052046032ebfa55da813606  
