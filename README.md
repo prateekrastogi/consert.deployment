@@ -24,14 +24,21 @@ gcloud container clusters get-credentials production --zone us-central1-a --proj
 ------Accessing Services Dashboards------
 
 1. kubectl proxy                       
-    #Must be continuously running to access the dashboards
+    #Must be continuously running to access the proxy dashboards
 
-2. Kubernetes Dashboard URL: localhost:8001/ui
+2. Kubernetes Dashboard URL: http://localhost:8001/ui
     #Kubernetes dashboard will ask for config file to login. But, in windows its not properly working. So, open %USER%/.kube/config file and copy 'access-token' sub-field inside 'auth-provider' field, and provide that copied token to the login page token form field.
 
-3. Kibana URL: localhost:8001/api/v1/proxy/namespaces/default/services/elastic-elasticsearch-kibana
+3. Kibana URL: http://localhost:8001/api/v1/proxy/namespaces/default/services/elastic-elasticsearch-kibana
 
-4. NoSqlClient URL: localhost:8001/api/v1/proxy/namespaces/default/services/nosqlclient:http
+4. NoSqlClient URL: http://localhost:8001/api/v1/proxy/namespaces/default/services/nosqlclient:http
+
+# Below panels must be accessed only from the given urls, i.e. no proxying, to avoid 404 resources not found error.
+5. seeder explorer: https://seeder.consert.live/explorer/
+
+6. backend explorer: https://backend.consert.live/explorer/
+
+7. backend graphiql: https://backend.consert.live/graphiql 
 
 ------Updating a deployment----
 
