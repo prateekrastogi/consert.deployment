@@ -42,9 +42,6 @@ gcloud container clusters get-credentials production --zone us-central1-a --proj
 
 ------Updating a deployment----
 
-kubectl apply -f FILENAME [options e.g. --recursive]                 
-#Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates.
-
 helm upgrade -f elasticsearch/values.yaml elastic elasticsearch/elasticsearch
 #For updating elasticsearch helm release
 
@@ -54,6 +51,12 @@ helm upgrade -f mongo/values.yaml mongo stable/mongodb-replicaset
 kubectl replace -f ingress                    
 #For updating a ingress always run this command on a modified Ingress yaml file not 'apply'
 
+kubectl replace --force -f FILENAME
+#Force replaces the deployment by deleting and then creating the resources. Use it for UPDATING DEPLOYMENTS.
+
+#Below one is very rarely used. Read its description before using.
+kubectl apply -f FILENAME [options e.g. --recursive]                 
+#Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates. Only use when there are actual changes in the deployment file.
 
 ------Deleting a deployment------
 
