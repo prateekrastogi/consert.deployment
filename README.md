@@ -5,6 +5,7 @@ gcloud container clusters get-credentials staging --zone us-east1-b --project co
 gcloud container clusters get-credentials production --zone us-central1-a --project consert-171717
 
 ------Creating a deployment------
+# Initiate the deployment with 6 node cluster for properly deploying services such as elasticsearch etc.       Afterwards, scale down the no. of instances to 3 or 4 nodes to maximize utilization.
 
 1. Install Helm & Kubectl   
 #Create Helm's Tiller service account and patch tiller deploy using: https://gist.github.com/prateekrastogi/b7d703ad7052046032ebfa55da813606  
@@ -51,12 +52,8 @@ helm upgrade -f mongo/values.yaml mongo stable/mongodb-replicaset
 kubectl replace -f ingress                    
 #For updating a ingress always run this command on a modified Ingress yaml file not 'apply'
 
-kubectl replace --force -f FILENAME
-#Force replaces the deployment by deleting and then creating the resources. Use it for UPDATING DEPLOYMENTS.
-
-#Below one is very rarely used. Read its description before using.
 kubectl apply -f FILENAME [options e.g. --recursive]                 
-#Update the whole deployment according to changes in consert.yaml. Does not perform deletion of removed configs that were present earlier. Only updates. Only use when there are actual changes in the deployment file.
+#Update the deployment according to changes in consert.yaml. So, change the tags of releases in .yaml file for updating those deployments. The only way to pull the most recent image of already deployed tag is by deleting the pods of that deployment manually, so as to force restart those pods. See: https://github.com/kubernetes/kubernetes/issues/33664 
 
 ------Deleting a deployment------
 
